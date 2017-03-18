@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>站点详情</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+  
+    <script src="http://webapi.amap.com/maps?v=1.3&key=6efc29d7bf617b7b91dcfdae1aae7408"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js"></script>
+    <script src="./sites.js"></script>
+    
+
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 14
+    });
+
+    var _onClick = function(e){
+        alert(e.target.G.title);
+        //console.log(e.target);
+        
+    }  
+    
+
+    var gererate = function (site) {
+        return "名称："+site.type+"-"+site.name+"\n"
+            + "地址："+site.address+"\n"
+            + "联系电话："+ site.tel;
+    };
+
+    //每种类型的站点对应一种颜色
+    var icons = {
+        "自提点":new AMap.Icon({
+            image: './bg/blue.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "自提柜":new AMap.Icon({
+            image: './bg/red.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "合作代收点":new AMap.Icon({
+            image: './bg/green.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "校园京东派":new AMap.Icon({
+            image: './bg/pink.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "移动自提车":new AMap.Icon({
+            image: './bg/purple.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "中集e栈":new AMap.Icon({
+            image: './bg/orange.png', 
+            imageSize : new AMap.Size(19,32)
+        }),
+        "丰巢自提柜":new AMap.Icon({
+            image: './bg/lightblue.png', 
+            imageSize : new AMap.Size(19,32)
+        })
+    };
+  
+    
+    var markers = []; //sites见引用的JS文件
+    for (var i = 0; i < sites.length; i += 1) {
+        var marker;
+        marker = new AMap.Marker({
+            icon: icons[sites[i].type],
+            position: sites[i].location.split(','),
+            offset: new AMap.Pixel(-10,-32),
+            title: gererate(sites[i]),
+            map: map
+        });
+    
+        AMap.event.addListener(marker, 'click', _onClick);
+        markers.push(marker);
+    }
+  
+    //map.setFitView();
+</script>
+
+ 
+</body>
+</html>
